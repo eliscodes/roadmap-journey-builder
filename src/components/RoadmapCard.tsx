@@ -10,7 +10,7 @@ interface RoadmapCardProps {
   title: string;
   description: string;
   type: "KAF" | "Feature";
-  status: "planned" | "in-progress" | "completed";
+  status: "planned" | "in-progress" | "completed" | "on-hold";
   priority: "low" | "medium" | "high";
   dueDate: string;
   className?: string;
@@ -31,6 +31,7 @@ const RoadmapCard = ({
     planned: "bg-gray-100 text-gray-800",
     "in-progress": "bg-amber-100 text-amber-800",
     completed: "bg-green-100 text-green-800",
+    "on-hold": "bg-red-100 text-red-800"
   };
 
   const formattedDate = format(new Date(dueDate), 'MMM d, yyyy');
