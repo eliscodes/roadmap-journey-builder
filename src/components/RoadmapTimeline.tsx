@@ -24,7 +24,7 @@ interface RoadmapItem {
   title: string;
   description: string;
   type: "KAF" | "Feature";
-  status: "planned" | "in-progress" | "completed";
+  status: "planned" | "in-progress" | "completed" | "on-hold";
   priority: "low" | "medium" | "high";
   dueDate: string;
 }
@@ -92,7 +92,7 @@ const RoadmapTimeline = () => {
       title: formData.get("title") as string,
       description: formData.get("description") as string,
       type: formData.get("type") as "KAF" | "Feature",
-      status: formData.get("status") as "planned" | "in-progress" | "completed",
+      status: formData.get("status") as "planned" | "in-progress" | "completed" | "on-hold",
       priority: formData.get("priority") as "low" | "medium" | "high",
       dueDate: formData.get("dueDate") as string,
     };
