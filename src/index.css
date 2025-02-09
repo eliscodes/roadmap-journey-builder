@@ -64,11 +64,16 @@
 }
 
 .timeline-connector {
-  @apply absolute left-4 top-0 w-1 h-full bg-gradient-to-b from-blue-400 to-blue-600;
+  @apply absolute left-[7.5rem] top-0 w-px h-full bg-gray-200;
 }
 
 .timeline-dot {
-  @apply absolute -left-2 top-1/2 w-4 h-4 rounded-full bg-blue-500 border-2 border-white shadow-md;
+  @apply absolute left-[7.5rem] top-1/2 w-2 h-2 rounded-full bg-gray-400 border-2 border-white;
+  transform: translate(-50%, -50%);
+}
+
+.timeline-date {
+  @apply absolute left-0 top-1/2 w-24 text-sm text-gray-500 text-right pr-8;
   transform: translateY(-50%);
 }
 
@@ -86,3 +91,4 @@
 .fade-in {
   animation: fadeIn 0.3s ease-out forwards;
 }
+

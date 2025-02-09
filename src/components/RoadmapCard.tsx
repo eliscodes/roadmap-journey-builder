@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { Pencil } from "lucide-react";
+import { format } from "date-fns";
 
 interface RoadmapCardProps {
   title: string;
@@ -38,13 +39,15 @@ const RoadmapCard = ({
     high: "bg-rose-400",
   };
 
+  const formattedDate = format(new Date(dueDate), 'MMM d, yyyy');
+
   return (
     <div className="relative">
+      <div className="timeline-date">{formattedDate}</div>
       <div className="timeline-dot" />
-      <Card className={cn("roadmap-card ml-6", className)}>
+      <Card className={cn("roadmap-card ml-32", className)}>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <div className="flex items-center gap-2">
-            <span className={cn("priority-indicator", priorityColors[priority])} />
             <Badge variant="secondary" className="font-medium">
               {type}
             </Badge>
@@ -69,7 +72,6 @@ const RoadmapCard = ({
         <CardContent>
           <h3 className="font-semibold text-lg mb-2">{title}</h3>
           <p className="text-sm text-muted-foreground mb-4">{description}</p>
-          <div className="text-xs text-muted-foreground">Due: {dueDate}</div>
         </CardContent>
       </Card>
     </div>
@@ -77,3 +79,4 @@ const RoadmapCard = ({
 };
 
 export default RoadmapCard;
+
