@@ -39,37 +39,40 @@ const RoadmapCard = ({
   };
 
   return (
-    <Card className={cn("roadmap-card", className)}>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <div className="flex items-center gap-2">
-          <span className={cn("priority-indicator", priorityColors[priority])} />
-          <Badge variant="secondary" className="font-medium">
-            {type}
-          </Badge>
-        </div>
-        <div className="flex items-center gap-2">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={onEdit}
-            className="h-8 w-8"
-          >
-            <Pencil className="h-4 w-4" />
-          </Button>
-          <Badge
-            variant="outline"
-            className={cn("status-chip", statusColors[status])}
-          >
-            {status}
-          </Badge>
-        </div>
-      </CardHeader>
-      <CardContent>
-        <h3 className="font-semibold text-lg mb-2">{title}</h3>
-        <p className="text-sm text-muted-foreground mb-4">{description}</p>
-        <div className="text-xs text-muted-foreground">Due: {dueDate}</div>
-      </CardContent>
-    </Card>
+    <div className="relative">
+      <div className="timeline-dot" />
+      <Card className={cn("roadmap-card ml-6", className)}>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <div className="flex items-center gap-2">
+            <span className={cn("priority-indicator", priorityColors[priority])} />
+            <Badge variant="secondary" className="font-medium">
+              {type}
+            </Badge>
+          </div>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={onEdit}
+              className="h-8 w-8"
+            >
+              <Pencil className="h-4 w-4" />
+            </Button>
+            <Badge
+              variant="outline"
+              className={cn("status-chip", statusColors[status])}
+            >
+              {status}
+            </Badge>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <h3 className="font-semibold text-lg mb-2">{title}</h3>
+          <p className="text-sm text-muted-foreground mb-4">{description}</p>
+          <div className="text-xs text-muted-foreground">Due: {dueDate}</div>
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 

@@ -47,7 +47,7 @@
 }
 
 .roadmap-card {
-  @apply transition-all duration-300 ease-in-out;
+  @apply transition-all duration-300 ease-in-out relative;
   transform-origin: center;
 }
 
@@ -64,7 +64,12 @@
 }
 
 .timeline-connector {
-  @apply absolute left-4 top-0 w-0.5 h-full bg-gray-200;
+  @apply absolute left-4 top-0 w-1 h-full bg-gradient-to-b from-blue-400 to-blue-600;
+}
+
+.timeline-dot {
+  @apply absolute -left-2 top-1/2 w-4 h-4 rounded-full bg-blue-500 border-2 border-white shadow-md;
+  transform: translateY(-50%);
 }
 
 @keyframes fadeIn {
