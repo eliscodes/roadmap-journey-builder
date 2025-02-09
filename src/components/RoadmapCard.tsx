@@ -2,6 +2,8 @@
 import { cn } from "@/lib/utils";
 import { Card, CardContent, CardHeader } from "./ui/card";
 import { Badge } from "./ui/badge";
+import { Button } from "./ui/button";
+import { Pencil } from "lucide-react";
 
 interface RoadmapCardProps {
   title: string;
@@ -11,6 +13,7 @@ interface RoadmapCardProps {
   priority: "low" | "medium" | "high";
   dueDate: string;
   className?: string;
+  onEdit?: () => void;
 }
 
 const RoadmapCard = ({
@@ -21,6 +24,7 @@ const RoadmapCard = ({
   priority,
   dueDate,
   className,
+  onEdit,
 }: RoadmapCardProps) => {
   const statusColors = {
     planned: "bg-gray-100 text-gray-800",
@@ -43,9 +47,22 @@ const RoadmapCard = ({
             {type}
           </Badge>
         </div>
-        <Badge variant="outline" className={cn("status-chip", statusColors[status])}>
-          {status}
-        </Badge>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onEdit}
+            className="h-8 w-8"
+          >
+            <Pencil className="h-4 w-4" />
+          </Button>
+          <Badge
+            variant="outline"
+            className={cn("status-chip", statusColors[status])}
+          >
+            {status}
+          </Badge>
+        </div>
       </CardHeader>
       <CardContent>
         <h3 className="font-semibold text-lg mb-2">{title}</h3>
