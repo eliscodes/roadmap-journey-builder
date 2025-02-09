@@ -186,6 +186,7 @@ const RoadmapTimeline = () => {
                   <SelectItem value="planned">Planned</SelectItem>
                   <SelectItem value="in-progress">In Progress</SelectItem>
                   <SelectItem value="completed">Completed</SelectItem>
+                  <SelectItem value="on-hold">On Hold</SelectItem>
                 </SelectContent>
               </Select>
             </div>
