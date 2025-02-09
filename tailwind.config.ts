@@ -1,6 +1,16 @@
 import type { Config } from "tailwindcss";
 
 export default {
+  // Other configurations...
+  safelist: [
+    "bg-gray-100", "text-gray-800",
+    "bg-amber-100", "text-amber-800",
+    "bg-green-100", "text-green-800",
+    "bg-red-100", "text-red-800" // Ensure this is included!
+  ]
+} satisfies Config;
+
+export default {
 	darkMode: ["class"],
 	content: [
 		"./pages/**/*.{ts,tsx}",
