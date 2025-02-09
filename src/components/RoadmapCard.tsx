@@ -33,12 +33,6 @@ const RoadmapCard = ({
     completed: "bg-green-100 text-green-800",
   };
 
-  const priorityColors = {
-    low: "bg-blue-400",
-    medium: "bg-amber-400",
-    high: "bg-rose-400",
-  };
-
   const formattedDate = format(new Date(dueDate), 'MMM d, yyyy');
 
   return (
@@ -48,7 +42,13 @@ const RoadmapCard = ({
       <Card className={cn("roadmap-card ml-32", className)}>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <div className="flex items-center gap-2">
-            <Badge variant="secondary" className="font-medium">
+            <Badge 
+              variant="outline" 
+              className={cn(
+                "font-medium",
+                type === "Feature" ? "bg-blue-100 text-blue-800" : "bg-purple-100 text-purple-800"
+              )}
+            >
               {type}
             </Badge>
           </div>
@@ -79,4 +79,3 @@ const RoadmapCard = ({
 };
 
 export default RoadmapCard;
-
