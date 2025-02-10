@@ -1,5 +1,5 @@
-
 import { useState } from "react";
+import ReactMarkdown from "react-markdown";
 import RoadmapCard from "./RoadmapCard";
 import { Button } from "./ui/button";
 import {
@@ -111,28 +111,6 @@ const RoadmapTimeline = () => {
     });
   };
 
-  const handleAdd = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    
-    const newItem: RoadmapItem = {
-      id: Math.max(...items.map(item => item.id), 0) + 1,
-      title: formData.get("title") as string,
-      description: formData.get("description") as string,
-      type: formData.get("type") as "KAF" | "Feature",
-      status: formData.get("status") as "planned" | "in-progress" | "completed" | "on-hold",
-      priority: formData.get("priority") as "low" | "medium" | "high",
-      dueDate: formData.get("dueDate") as string,
-    };
-
-    setItems([...items, newItem]);
-    setIsAddDialogOpen(false);
-    toast({
-      title: "Item added",
-      description: "New roadmap item has been successfully added.",
-    });
-  };
-
   return (
     <div className="max-w-4xl mx-auto p-6">
       <div className="flex justify-between items-center mb-8">
@@ -189,48 +167,18 @@ const RoadmapTimeline = () => {
               <Textarea
                 id="description"
                 name="description"
-                defaultValue={editingItem?.description}
+                value={editingItem?.description || ""}
+                onChange={(e) => 
+                  setEditingItem((prev) => prev ? { ...prev, description: e.target.value } : null)
+                }
                 required
               />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="type">Type</Label>
-              <Select name="type" defaultValue={editingItem?.type}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="KAF">KAF</SelectItem>
-                  <SelectItem value="Feature">Feature</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="status">Status</Label>
-              <Select name="status" defaultValue={editingItem?.status}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="planned">Planned</SelectItem>
-                  <SelectItem value="in-progress">In Progress</SelectItem>
-                  <SelectItem value="completed">Completed</SelectItem>
-                  <SelectItem value="on-hold">On Hold</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="priority">Priority</Label>
-              <Select name="priority" defaultValue={editingItem?.priority}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select priority" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="low">Low</SelectItem>
-                  <SelectItem value="medium">Medium</SelectItem>
-                  <SelectItem value="high">High</SelectItem>
-                </SelectContent>
-              </Select>
+              <div className="p-2 mt-2 border rounded-md bg-gray-50">
+                <p className="text-sm font-medium">Live Preview:</p>
+                <ReactMarkdown className="text-sm text-gray-700">
+                  {editingItem?.description || "_Start typing..._"}
+                </ReactMarkdown>
+              </div>
             </div>
             <div className="space-y-2">
               <Label htmlFor="dueDate">Due Date</Label>
@@ -251,106 +199,8 @@ const RoadmapTimeline = () => {
           </form>
         </DialogContent>
       </Dialog>
-
-      <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Add New Roadmap Item</DialogTitle>
-          </DialogHeader>
-          <form onSubmit={handleAdd} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="title">Title</Label>
-              <Input
-                id="title"
-                name="title"
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="description">Description</Label>
-              <Textarea
-                id="description"
-                name="description"
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="type">Type</Label>
-              <Select name="type" defaultValue="Feature">
-                <SelectTrigger>
-                  <SelectValue placeholder="Select type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="KAF">KAF</SelectItem>
-                  <SelectItem value="Feature">Feature</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="status">Status</Label>
-              <Select name="status" defaultValue="planned">
-                <SelectTrigger>
-                  <SelectValue placeholder="Select status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="planned">Planned</SelectItem>
-                  <SelectItem value="in-progress">In Progress</SelectItem>
-                  <SelectItem value="completed">Completed</SelectItem>
-                  <SelectItem value="on-hold">On Hold</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="priority">Priority</Label>
-              <Select name="priority" defaultValue="medium">
-                <SelectTrigger>
-                  <SelectValue placeholder="Select priority" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="low">Low</SelectItem>
-                  <SelectItem value="medium">Medium</SelectItem>
-                  <SelectItem value="high">High</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="dueDate">Due Date</Label>
-              <Input
-                id="dueDate"
-                name="dueDate"
-                type="date"
-                required
-              />
-            </div>
-            <div className="flex justify-end gap-2">
-              <Button type="button" variant="outline" onClick={() => setIsAddDialogOpen(false)}>
-                Cancel
-              </Button>
-              <Button type="submit">Add Item</Button>
-            </div>
-          </form>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };
 
 export default RoadmapTimeline;
-
-{ // add MD live preview}
-
-<div className="space-y-2">
-  <Label htmlFor="description">Description</Label>
-  <Textarea
-    id="description"
-    name="description"
-    defaultValue={editingItem?.description}
-    onChange={(e) => setEditingItem({ ...editingItem, description: e.target.value })}
-    required
-  />
-  <div className="p-2 mt-2 border rounded-md bg-gray-50">
-    <p className="text-sm font-medium">Live Preview:</p>
-    <ReactMarkdown className="text-sm text-gray-700">{editingItem?.description || ""}</ReactMarkdown>
-  </div>
-</div>
-
