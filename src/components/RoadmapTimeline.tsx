@@ -151,24 +151,49 @@ const RoadmapTimeline = () => {
           <Button variant="outline" onClick={() => setIsAddDialogOpen(true)}>+ Add Item</Button>
         </div>
       </div>
+
+      {/* Timeline visualization */}
+      <div className="relative mb-12 h-2 bg-gray-100 rounded">
+        <div className="absolute inset-0 flex items-center justify-between px-4">
+          {filteredItems.map((item, index) => (
+            <div 
+              key={item.id}
+              className={`w-4 h-4 rounded-full ${
+                item.status === 'completed' 
+                  ? 'bg-green-500' 
+                  : item.status === 'in-progress' 
+                  ? 'bg-amber-500'
+                  : item.status === 'on-hold'
+                  ? 'bg-red-500'
+                  : 'bg-gray-500'
+              }`}
+              style={{ left: `${(index / (filteredItems.length - 1)) * 100}%` }}
+            >
+              <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-xs text-gray-600 whitespace-nowrap">
+                {new Date(item.dueDate).toLocaleDateString()}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
       
-      <div className="relative space-y-4">
-        <div className="timeline-connector" />
+      {/* Item cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
         {filteredItems.map((item) => (
-          <div key={item.id} className="pl-8 fade-in">
-            <RoadmapCard
-              title={item.title}
-              description={item.description}
-              type={item.type}
-              status={item.status}
-              priority={item.priority}
-              dueDate={item.dueDate}
-              onEdit={() => handleEdit(item)}
-            />
-          </div>
+          <RoadmapCard
+            key={item.id}
+            title={item.title}
+            description={item.description}
+            type={item.type}
+            status={item.status}
+            priority={item.priority}
+            dueDate={item.dueDate}
+            onEdit={() => handleEdit(item)}
+          />
         ))}
       </div>
 
+      {/* Edit Dialog */}
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
@@ -252,6 +277,7 @@ const RoadmapTimeline = () => {
         </DialogContent>
       </Dialog>
 
+      {/* Add Dialog */}
       <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>

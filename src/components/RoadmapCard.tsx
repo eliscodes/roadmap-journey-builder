@@ -37,45 +37,42 @@ const RoadmapCard = ({
   const formattedDate = format(new Date(dueDate), 'MMM d, yyyy');
 
   return (
-    <div className="relative">
-      <div className="timeline-date">{formattedDate}</div>
-      <div className="timeline-dot" />
-      <Card className={cn("roadmap-card ml-32", className)}>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <div className="flex items-center gap-2">
-            <Badge 
-              variant="outline" 
-              className={cn(
-                "font-medium",
-                type === "Feature" ? "bg-blue-100 text-blue-800" : "bg-purple-100 text-purple-800"
-              )}
-            >
-              {type}
-            </Badge>
-          </div>
-          <div className="flex items-center gap-2">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={onEdit}
-              className="h-8 w-8"
-            >
-              <Pencil className="h-4 w-4" />
-            </Button>
-            <Badge
-              variant="outline"
-              className={cn("status-chip", statusColors[status])}
-            >
-              {status}
-            </Badge>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <h3 className="font-semibold text-lg mb-2">{title}</h3>
-          <p className="text-sm text-muted-foreground mb-4">{description}</p>
-        </CardContent>
-      </Card>
-    </div>
+    <Card className={cn("hover:shadow-lg transition-all duration-300", className)}>
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <div className="flex items-center gap-2">
+          <Badge 
+            variant="outline" 
+            className={cn(
+              "font-medium",
+              type === "Feature" ? "bg-blue-100 text-blue-800" : "bg-purple-100 text-purple-800"
+            )}
+          >
+            {type}
+          </Badge>
+          <span className="text-sm text-gray-500">{formattedDate}</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onEdit}
+            className="h-8 w-8"
+          >
+            <Pencil className="h-4 w-4" />
+          </Button>
+          <Badge
+            variant="outline"
+            className={cn("status-chip", statusColors[status])}
+          >
+            {status}
+          </Badge>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <h3 className="font-semibold text-lg mb-2">{title}</h3>
+        <p className="text-sm text-muted-foreground">{description}</p>
+      </CardContent>
+    </Card>
   );
 };
 
