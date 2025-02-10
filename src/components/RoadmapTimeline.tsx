@@ -336,3 +336,21 @@ const RoadmapTimeline = () => {
 };
 
 export default RoadmapTimeline;
+
+{ // add MD live preview}
+
+<div className="space-y-2">
+  <Label htmlFor="description">Description</Label>
+  <Textarea
+    id="description"
+    name="description"
+    defaultValue={editingItem?.description}
+    onChange={(e) => setEditingItem({ ...editingItem, description: e.target.value })}
+    required
+  />
+  <div className="p-2 mt-2 border rounded-md bg-gray-50">
+    <p className="text-sm font-medium">Live Preview:</p>
+    <ReactMarkdown className="text-sm text-gray-700">{editingItem?.description || ""}</ReactMarkdown>
+  </div>
+</div>
+
