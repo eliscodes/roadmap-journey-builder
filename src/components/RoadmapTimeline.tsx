@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import RoadmapCard from "./RoadmapCard";
 import { Button } from "./ui/button";
@@ -19,6 +18,7 @@ import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { Label } from "./ui/label";
 import { useToast } from "./ui/use-toast";
+import { format } from "date-fns";
 
 interface RoadmapItem {
   id: number;
@@ -133,6 +133,13 @@ const RoadmapTimeline = () => {
     });
   };
 
+  const statusColors = {
+    planned: "bg-gray-500",
+    "in-progress": "bg-amber-500",
+    completed: "bg-green-500",
+    "on-hold": "bg-red-500"
+  };
+
   return (
     <div className="max-w-4xl mx-auto p-6">
       <div className="flex justify-between items-center mb-8">
@@ -153,24 +160,17 @@ const RoadmapTimeline = () => {
       </div>
 
       {/* Timeline visualization */}
-      <div className="relative mb-12 h-2 bg-gray-100 rounded">
+      <div className="relative mb-16 h-2 bg-gray-100 rounded">
         <div className="absolute inset-0 flex items-center justify-between px-4">
           {filteredItems.map((item, index) => (
             <div 
               key={item.id}
-              className={`w-4 h-4 rounded-full ${
-                item.status === 'completed' 
-                  ? 'bg-green-500' 
-                  : item.status === 'in-progress' 
-                  ? 'bg-amber-500'
-                  : item.status === 'on-hold'
-                  ? 'bg-red-500'
-                  : 'bg-gray-500'
-              }`}
+              className="relative"
               style={{ left: `${(index / (filteredItems.length - 1)) * 100}%` }}
             >
+              <div className={`w-4 h-4 rounded-full ${statusColors[item.status]}`} />
               <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-xs text-gray-600 whitespace-nowrap">
-                {new Date(item.dueDate).toLocaleDateString()}
+                {format(new Date(item.dueDate), 'MMM dd, yyyy')}
               </div>
             </div>
           ))}
@@ -178,7 +178,7 @@ const RoadmapTimeline = () => {
       </div>
       
       {/* Item cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {filteredItems.map((item) => (
           <RoadmapCard
             key={item.id}

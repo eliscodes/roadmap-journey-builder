@@ -34,7 +34,7 @@ const RoadmapCard = ({
     "on-hold": "bg-red-100 text-red-800",
   };
 
-  const formattedDate = format(new Date(dueDate), 'MMM d, yyyy');
+  const formattedDate = format(new Date(dueDate), 'MMM dd, yyyy');
 
   return (
     <Card className={cn("hover:shadow-lg transition-all duration-300", className)}>
