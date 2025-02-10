@@ -1,85 +1,338 @@
 
-import { cn } from "@/lib/utils";
-import { Card, CardContent, CardHeader } from "./ui/card";
-import { Badge } from "./ui/badge";
+import { useState } from "react";
+import RoadmapCard from "./RoadmapCard";
 import { Button } from "./ui/button";
-import { Pencil } from "lucide-react";
-import { format } from "date-fns";
-import ReactMarkdown from "react-markdown";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "./ui/dialog";
+import { Input } from "./ui/input";
+import { Textarea } from "./ui/textarea";
+import { Label } from "./ui/label";
+import { useToast } from "./ui/use-toast";
 
-interface RoadmapCardProps {
+interface RoadmapItem {
+  id: number;
   title: string;
   description: string;
   type: "KAF" | "Feature";
   status: "planned" | "in-progress" | "completed" | "on-hold";
   priority: "low" | "medium" | "high";
   dueDate: string;
-  className?: string;
-  onEdit?: () => void;
 }
 
-const RoadmapCard = ({
-  title,
-  description,
-  type,
-  status,
-  priority,
-  dueDate,
-  className,
-  onEdit,
-}: RoadmapCardProps) => {
-  const statusColors = {
-    planned: "bg-gray-100 text-gray-800",
-    "in-progress": "bg-amber-100 text-amber-800",
-    completed: "bg-green-100 text-green-800",
-    "on-hold": "bg-red-100 text-red-800",
+const RoadmapTimeline = () => {
+  const [filter, setFilter] = useState("all");
+  const [editingItem, setEditingItem] = useState<RoadmapItem | null>(null);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const { toast } = useToast();
+
+  const [items, setItems] = useState<RoadmapItem[]>([
+    {
+      id: 1,
+      title: "User Authentication System",
+      description: "Implement secure login and registration functionality",
+      type: "Feature",
+      status: "completed",
+      priority: "high",
+      dueDate: "2024-03-15",
+    },
+    {
+      id: 2,
+      title: "Dashboard Bug Fix",
+      description: "Fix data visualization issues in the main dashboard",
+      type: "KAF",
+      status: "in-progress",
+      priority: "medium",
+      dueDate: "2024-03-20",
+    },
+    {
+      id: 3,
+      title: "API Integration",
+      description: "Connect to third-party payment processing service",
+      type: "Feature",
+      status: "planned",
+      priority: "high",
+      dueDate: "2024-04-01",
+    },
+    {
+      id: 4,
+      title: "Performance Optimization",
+      description: "Improve loading times for large data sets",
+      type: "KAF",
+      status: "planned",
+      priority: "low",
+      dueDate: "2024-04-15",
+    },
+  ]);
+
+  const filteredItems = items.filter((item) =>
+    filter === "all" ? true : item.type.toLowerCase() === filter.toLowerCase()
+  );
+
+  const handleEdit = (item: RoadmapItem) => {
+    setEditingItem(item);
+    setIsEditDialogOpen(true);
   };
 
-  const formattedDate = format(new Date(dueDate), 'MMM d, yyyy');
+  const handleSaveEdit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!editingItem) return;
+
+    const formData = new FormData(e.currentTarget);
+    const updatedItem: RoadmapItem = {
+      ...editingItem,
+      title: formData.get("title") as string,
+      description: formData.get("description") as string,
+      type: formData.get("type") as "KAF" | "Feature",
+      status: formData.get("status") as "planned" | "in-progress" | "completed" | "on-hold",
+      priority: formData.get("priority") as "low" | "medium" | "high",
+      dueDate: formData.get("dueDate") as string,
+    };
+
+    setItems(items.map((item) => 
+      item.id === editingItem.id ? updatedItem : item
+    ));
+    setIsEditDialogOpen(false);
+    setEditingItem(null);
+    toast({
+      title: "Item updated",
+      description: "The roadmap item has been successfully updated.",
+    });
+  };
+
+  const handleAdd = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    
+    const newItem: RoadmapItem = {
+      id: Math.max(...items.map(item => item.id), 0) + 1,
+      title: formData.get("title") as string,
+      description: formData.get("description") as string,
+      type: formData.get("type") as "KAF" | "Feature",
+      status: formData.get("status") as "planned" | "in-progress" | "completed" | "on-hold",
+      priority: formData.get("priority") as "low" | "medium" | "high",
+      dueDate: formData.get("dueDate") as string,
+    };
+
+    setItems([...items, newItem]);
+    setIsAddDialogOpen(false);
+    toast({
+      title: "Item added",
+      description: "New roadmap item has been successfully added.",
+    });
+  };
 
   return (
-    <div className="relative">
-      <div className="timeline-date">{formattedDate}</div>
-      <div className="timeline-dot" />
-      <Card className={cn("roadmap-card ml-32", className)}>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <div className="flex items-center gap-2">
-            <Badge 
-              variant="outline" 
-              className={cn(
-                "font-medium",
-                type === "Feature" ? "bg-blue-100 text-blue-800" : "bg-purple-100 text-purple-800"
-              )}
-            >
-              {type}
-            </Badge>
+    <div className="max-w-4xl mx-auto p-6">
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-3xl font-bold">Project Roadmap</h1>
+        <div className="flex gap-4">
+          <Select value={filter} onValueChange={setFilter}>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Filter by type" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Items</SelectItem>
+              <SelectItem value="kaf">KAF</SelectItem>
+              <SelectItem value="feature">Features</SelectItem>
+            </SelectContent>
+          </Select>
+          <Button variant="outline" onClick={() => setIsAddDialogOpen(true)}>+ Add Item</Button>
+        </div>
+      </div>
+      
+      <div className="relative space-y-4">
+        <div className="timeline-connector" />
+        {filteredItems.map((item) => (
+          <div key={item.id} className="pl-8 fade-in">
+            <RoadmapCard
+              title={item.title}
+              description={item.description}
+              type={item.type}
+              status={item.status}
+              priority={item.priority}
+              dueDate={item.dueDate}
+              onEdit={() => handleEdit(item)}
+            />
           </div>
-          <div className="flex items-center gap-2">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={onEdit}
-              className="h-8 w-8"
-            >
-              <Pencil className="h-4 w-4" />
-            </Button>
-            <Badge
-              variant="outline"
-              className={cn("status-chip", statusColors[status])}
-            >
-              {status}
-            </Badge>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <h3 className="font-semibold text-lg mb-2">{title}</h3>
-          <ReactMarkdown className="text-sm text-muted-foreground mb-4">
-            {description}
-          </ReactMarkdown>
-        </CardContent>
-      </Card>
+        ))}
+      </div>
+
+      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Edit Roadmap Item</DialogTitle>
+          </DialogHeader>
+          <form onSubmit={handleSaveEdit} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="title">Title</Label>
+              <Input
+                id="title"
+                name="title"
+                defaultValue={editingItem?.title}
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="description">Description</Label>
+              <Textarea
+                id="description"
+                name="description"
+                defaultValue={editingItem?.description}
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="type">Type</Label>
+              <Select name="type" defaultValue={editingItem?.type}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="KAF">KAF</SelectItem>
+                  <SelectItem value="Feature">Feature</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="status">Status</Label>
+              <Select name="status" defaultValue={editingItem?.status}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="planned">Planned</SelectItem>
+                  <SelectItem value="in-progress">In Progress</SelectItem>
+                  <SelectItem value="completed">Completed</SelectItem>
+                  <SelectItem value="on-hold">On Hold</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="priority">Priority</Label>
+              <Select name="priority" defaultValue={editingItem?.priority}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select priority" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="low">Low</SelectItem>
+                  <SelectItem value="medium">Medium</SelectItem>
+                  <SelectItem value="high">High</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="dueDate">Due Date</Label>
+              <Input
+                id="dueDate"
+                name="dueDate"
+                type="date"
+                defaultValue={editingItem?.dueDate}
+                required
+              />
+            </div>
+            <div className="flex justify-end gap-2">
+              <Button type="button" variant="outline" onClick={() => setIsEditDialogOpen(false)}>
+                Cancel
+              </Button>
+              <Button type="submit">Save Changes</Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Add New Roadmap Item</DialogTitle>
+          </DialogHeader>
+          <form onSubmit={handleAdd} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="title">Title</Label>
+              <Input
+                id="title"
+                name="title"
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="description">Description</Label>
+              <Textarea
+                id="description"
+                name="description"
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="type">Type</Label>
+              <Select name="type" defaultValue="Feature">
+                <SelectTrigger>
+                  <SelectValue placeholder="Select type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="KAF">KAF</SelectItem>
+                  <SelectItem value="Feature">Feature</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="status">Status</Label>
+              <Select name="status" defaultValue="planned">
+                <SelectTrigger>
+                  <SelectValue placeholder="Select status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="planned">Planned</SelectItem>
+                  <SelectItem value="in-progress">In Progress</SelectItem>
+                  <SelectItem value="completed">Completed</SelectItem>
+                  <SelectItem value="on-hold">On Hold</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="priority">Priority</Label>
+              <Select name="priority" defaultValue="medium">
+                <SelectTrigger>
+                  <SelectValue placeholder="Select priority" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="low">Low</SelectItem>
+                  <SelectItem value="medium">Medium</SelectItem>
+                  <SelectItem value="high">High</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="dueDate">Due Date</Label>
+              <Input
+                id="dueDate"
+                name="dueDate"
+                type="date"
+                required
+              />
+            </div>
+            <div className="flex justify-end gap-2">
+              <Button type="button" variant="outline" onClick={() => setIsAddDialogOpen(false)}>
+                Cancel
+              </Button>
+              <Button type="submit">Add Item</Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
 
-export default RoadmapCard;
+export default RoadmapTimeline;
