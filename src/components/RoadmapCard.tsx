@@ -5,6 +5,7 @@ import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { Pencil } from "lucide-react";
 import { format } from "date-fns";
+import ReactMarkdown from "react-markdown";
 
 interface RoadmapCardProps {
   title: string;
@@ -72,7 +73,9 @@ const RoadmapCard = ({
         </CardHeader>
         <CardContent>
           <h3 className="font-semibold text-lg mb-2">{title}</h3>
-          <p className="text-sm text-muted-foreground mb-4">{description}</p>
+          <ReactMarkdown className="text-sm text-muted-foreground mb-4">
+            {description}
+          </ReactMarkdown>
         </CardContent>
       </Card>
     </div>
@@ -80,42 +83,3 @@ const RoadmapCard = ({
 };
 
 export default RoadmapCard;
-
-{ // add markdown to textfields }
-
-import ReactMarkdown from "react-markdown";
-
-const RoadmapCard = ({
-  title,
-  description,
-  type,
-  status,
-  priority,
-  dueDate,
-  className,
-  onEdit,
-}: RoadmapCardProps) => {
-  const statusColors = {
-    planned: "bg-gray-100 text-gray-800",
-    "in-progress": "bg-amber-100 text-amber-800",
-    completed: "bg-green-100 text-green-800",
-    "on-hold": "bg-red-100 text-red-800",
-  };
-
-  return (
-    <div className={`p-4 border rounded-lg shadow ${statusColors[status]} ${className}`}>
-      <h3 className="text-lg font-bold">{title}</h3>
-      {/* Render Markdown for description */}
-      <ReactMarkdown className="text-sm text-gray-700 mt-2">
-        {description}
-      </ReactMarkdown>
-      <div className="flex justify-between items-center mt-3">
-        <span className="text-xs font-medium">{type}</span>
-        <button onClick={onEdit} className="text-xs text-blue-600 hover:underline">Edit</button>
-      </div>
-    </div>
-  );
-};
-
-export default RoadmapCard;
-
