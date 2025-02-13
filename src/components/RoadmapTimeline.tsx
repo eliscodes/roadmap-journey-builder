@@ -28,7 +28,7 @@ interface RoadmapItem {
   type: "KAF" | "Feature";
   status: "planned" | "in-progress" | "completed" | "on-hold";
   priority: "low" | "medium" | "high";
-  team: "Backend Team" | "Frontend Team";
+  team: "PIM Team" | "Shop Team";
   dueDate: string;
 }
 
@@ -47,7 +47,7 @@ const RoadmapTimeline = () => {
       type: "Feature",
       status: "completed",
       priority: "high",
-      team: "Backend Team",
+      team: "PIM Team",
       dueDate: "2024-03-15",
     },
     {
@@ -57,7 +57,7 @@ const RoadmapTimeline = () => {
       type: "KAF",
       status: "in-progress",
       priority: "medium",
-      team: "Frontend Team",
+      team: "Shop Team",
       dueDate: "2024-03-20",
     },
     {
@@ -67,7 +67,7 @@ const RoadmapTimeline = () => {
       type: "Feature",
       status: "planned",
       priority: "high",
-      team: "Backend Team",
+      team: "PIM Team",
       dueDate: "2024-04-01",
     },
     {
@@ -77,7 +77,7 @@ const RoadmapTimeline = () => {
       type: "KAF",
       status: "planned",
       priority: "low",
-      team: "Frontend Team",
+      team: "Shop Team",
       dueDate: "2024-04-15",
     },
   ]);
@@ -103,7 +103,7 @@ const RoadmapTimeline = () => {
       type: formData.get("type") as "KAF" | "Feature",
       status: formData.get("status") as "planned" | "in-progress" | "completed" | "on-hold",
       priority: formData.get("priority") as "low" | "medium" | "high",
-      team: formData.get("team") as "Backend Team" | "Frontend Team",
+      team: formData.get("team") as "PIM Team" | "Shop Team",
       dueDate: formData.get("dueDate") as string,
     };
 
@@ -129,7 +129,7 @@ const RoadmapTimeline = () => {
       type: formData.get("type") as "KAF" | "Feature",
       status: formData.get("status") as "planned" | "in-progress" | "completed" | "on-hold",
       priority: formData.get("priority") as "low" | "medium" | "high",
-      team: formData.get("team") as "Backend Team" | "Frontend Team",
+      team: formData.get("team") as "PIM Team" | "Shop Team",
       dueDate: formData.get("dueDate") as string,
     };
 
@@ -273,8 +273,8 @@ const RoadmapTimeline = () => {
                   <SelectValue placeholder="Select Team" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Backend Team">Backend</SelectItem>
-                  <SelectItem value="Frontend Team">Frontend</SelectItem>
+                  <SelectItem value="PIM Team">Backend</SelectItem>
+                  <SelectItem value="Shop Team">Frontend</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -362,13 +362,13 @@ const RoadmapTimeline = () => {
             </div>
             <div className="space-y-2">
               <Label htmlFor="team">Team</Label>
-              <Select name="team" defaultValue="Backend Team">
+              <Select name="team" defaultValue="PIM Team">
                 <SelectTrigger>
                   <SelectValue placeholder="Select Team" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Backend Team">Backend</SelectItem>
-                  <SelectItem value="Frontend Team">Frontend</SelectItem>
+                  <SelectItem value="PIM Team">PIM</SelectItem>
+                  <SelectItem value="Shop Team">Shop</SelectItem>
                 </SelectContent>
               </Select>
             </div>
