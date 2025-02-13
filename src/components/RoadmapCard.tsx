@@ -24,6 +24,7 @@ const RoadmapCard = ({
   type,
   status,
   priority,
+  team,
   dueDate,
   className,
   onEdit,
