@@ -27,6 +27,7 @@ interface RoadmapItem {
   type: "KAF" | "Feature";
   status: "planned" | "in-progress" | "completed" | "on-hold";
   priority: "low" | "medium" | "high";
+  team: "Backend Team" | "Frontend Team";
   dueDate: string;
 }
 
