@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import RoadmapCard from "./RoadmapCard";
 import { Button } from "./ui/button";
@@ -46,6 +47,7 @@ const RoadmapTimeline = () => {
       type: "Feature",
       status: "completed",
       priority: "high",
+      team: "Backend Team",
       dueDate: "2024-03-15",
     },
     {
@@ -55,6 +57,7 @@ const RoadmapTimeline = () => {
       type: "KAF",
       status: "in-progress",
       priority: "medium",
+      team: "Frontend Team",
       dueDate: "2024-03-20",
     },
     {
@@ -64,6 +67,7 @@ const RoadmapTimeline = () => {
       type: "Feature",
       status: "planned",
       priority: "high",
+      team: "Backend Team",
       dueDate: "2024-04-01",
     },
     {
@@ -73,6 +77,7 @@ const RoadmapTimeline = () => {
       type: "KAF",
       status: "planned",
       priority: "low",
+      team: "Frontend Team",
       dueDate: "2024-04-15",
     },
   ]);
@@ -98,7 +103,7 @@ const RoadmapTimeline = () => {
       type: formData.get("type") as "KAF" | "Feature",
       status: formData.get("status") as "planned" | "in-progress" | "completed" | "on-hold",
       priority: formData.get("priority") as "low" | "medium" | "high",
-      team: formData.get("team") as "Team Backend" | "Team Frontend",
+      team: formData.get("team") as "Backend Team" | "Frontend Team",
       dueDate: formData.get("dueDate") as string,
     };
 
@@ -124,7 +129,7 @@ const RoadmapTimeline = () => {
       type: formData.get("type") as "KAF" | "Feature",
       status: formData.get("status") as "planned" | "in-progress" | "completed" | "on-hold",
       priority: formData.get("priority") as "low" | "medium" | "high",
-      team: formData.get("team") as "Team Backend" | "Team Frontend",
+      team: formData.get("team") as "Backend Team" | "Frontend Team",
       dueDate: formData.get("dueDate") as string,
     };
 
@@ -261,7 +266,6 @@ const RoadmapTimeline = () => {
                 </SelectContent>
               </Select>
             </div>
-            </div>
             <div className="space-y-2">
               <Label htmlFor="team">Team</Label>
               <Select name="team" defaultValue={editingItem?.team}>
@@ -269,8 +273,8 @@ const RoadmapTimeline = () => {
                   <SelectValue placeholder="Select Team" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Team Backend">Backend</SelectItem>
-                  <SelectItem value="Team Frontend">Frontend</SelectItem>
+                  <SelectItem value="Backend Team">Backend</SelectItem>
+                  <SelectItem value="Frontend Team">Frontend</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -358,13 +362,13 @@ const RoadmapTimeline = () => {
             </div>
             <div className="space-y-2">
               <Label htmlFor="team">Team</Label>
-              <Select name="team" defaultValue={editingItem?.team}>
+              <Select name="team" defaultValue="Backend Team">
                 <SelectTrigger>
                   <SelectValue placeholder="Select Team" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Team Backend">Backend</SelectItem>
-                  <SelectItem value="Team Frontend">Frontend</SelectItem>
+                  <SelectItem value="Backend Team">Backend</SelectItem>
+                  <SelectItem value="Frontend Team">Frontend</SelectItem>
                 </SelectContent>
               </Select>
             </div>
