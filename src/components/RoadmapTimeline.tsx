@@ -46,7 +46,6 @@ const RoadmapTimeline = () => {
       type: "Feature",
       status: "completed",
       priority: "high",
-      team: "Backend Team",
       dueDate: "2024-03-15",
     },
     {
