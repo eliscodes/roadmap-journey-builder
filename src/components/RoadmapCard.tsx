@@ -12,6 +12,7 @@ interface RoadmapCardProps {
   type: "KAF" | "Feature";
   status: "planned" | "in-progress" | "completed" | "on-hold";
   priority: "low" | "medium" | "high";
+  team: "Backend Product" | "Frontend Product";
   dueDate: string;
   className?: string;
   onEdit?: () => void;
