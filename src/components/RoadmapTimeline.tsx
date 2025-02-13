@@ -98,6 +98,7 @@ const RoadmapTimeline = () => {
       type: formData.get("type") as "KAF" | "Feature",
       status: formData.get("status") as "planned" | "in-progress" | "completed" | "on-hold",
       priority: formData.get("priority") as "low" | "medium" | "high",
+      team: formData.get("team") as "Team Backend" | "Team Frontend",
       dueDate: formData.get("dueDate") as string,
     };
 
@@ -123,6 +124,7 @@ const RoadmapTimeline = () => {
       type: formData.get("type") as "KAF" | "Feature",
       status: formData.get("status") as "planned" | "in-progress" | "completed" | "on-hold",
       priority: formData.get("priority") as "low" | "medium" | "high",
+      team: formData.get("team") as "Team Backend" | "Team Frontend",
       dueDate: formData.get("dueDate") as string,
     };
 
@@ -188,6 +190,7 @@ const RoadmapTimeline = () => {
             type={item.type}
             status={item.status}
             priority={item.priority}
+            team={item.team}
             dueDate={item.dueDate}
             onEdit={() => handleEdit(item)}
           />
@@ -255,6 +258,19 @@ const RoadmapTimeline = () => {
                   <SelectItem value="low">Low</SelectItem>
                   <SelectItem value="medium">Medium</SelectItem>
                   <SelectItem value="high">High</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="team">Team</Label>
+              <Select name="team" defaultValue={editingItem?.team}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select Team" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Team Backend">Backend</SelectItem>
+                  <SelectItem value="Team Frontend">Frontend</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -337,6 +353,18 @@ const RoadmapTimeline = () => {
                   <SelectItem value="low">Low</SelectItem>
                   <SelectItem value="medium">Medium</SelectItem>
                   <SelectItem value="high">High</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="team">Team</Label>
+              <Select name="team" defaultValue={editingItem?.team}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select Team" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Team Backend">Backend</SelectItem>
+                  <SelectItem value="Team Frontend">Frontend</SelectItem>
                 </SelectContent>
               </Select>
             </div>
