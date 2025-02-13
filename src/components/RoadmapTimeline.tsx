@@ -273,8 +273,8 @@ const RoadmapTimeline = () => {
                   <SelectValue placeholder="Select Team" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="PIM Team">Backend</SelectItem>
-                  <SelectItem value="Shop Team">Frontend</SelectItem>
+                  <SelectItem value="PIM Team">PIM</SelectItem>
+                  <SelectItem value="Shop Team">Shop</SelectItem>
                 </SelectContent>
               </Select>
             </div>
